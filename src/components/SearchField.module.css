@@ -1,0 +1,24 @@
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4% auto;
+  background: #ffffff;
+  padding: 10px 14px;
+  border-radius: 14px;
+  z-index: 100;
+  box-shadow: 0 0.3rem #cecaca38;
+}
+
+.searchContainer input {
+  background: transparent;
+  border: none;
+  text-align: left;
+  color: rgb(81, 77, 77);
+  font-size: clamp(0.8rem, 1.1vw, 1.2em);
+  font-family: ;
+}
+
+.searchContainer input:focus {
+  outline: none;
+}

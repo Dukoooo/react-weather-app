@@ -1,13 +1,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   gap: 4rem;
   padding: 3%;
   min-width: 15em;
-  height: auto;
+  min-height: 20em;
   background: linear-gradient(#15ab9c68, #09116b4d);
   border-radius: 12px;
   border: 1px solid #ffffff37;
