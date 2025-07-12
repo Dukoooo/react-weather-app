@@ -20,6 +20,7 @@ function SearchField({ onSetCity }) {
         value={currCity}
         onChange={(e) => setCurrCity(e.target.value)}
         required
+        autoFocus
       />
     </form>
   );

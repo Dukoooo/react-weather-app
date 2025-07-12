@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import SearchField from "./SearchField";
 import styles from "./Weather.module.css";
 import Loader from "./Loader";
-import {
-  WiDaySunny,
-  WiRain,
-  WiCloudy,
-  WiSnow,
-  WiThunderstorm,
-} from "react-icons/wi";
+
+import sun from "../assets/sun.png";
+import rain from "../assets/rain.png";
+import clouds from "../assets/cloudy.png";
+import snow from "../assets/snow.png";
+import thunder from "../assets/storm.png";
 
 function Weather() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,19 +19,44 @@ function Weather() {
   function getWeatherIcon(main) {
     switch (main) {
       case "Clear":
-        return <WiDaySunny size={48} />;
+        return <img src={sun} alt="Clear" />;
       case "Rain":
-        return <WiRain size={48} />;
+        return <img src={rain} alt="Rain" />;
       case "Clouds":
-        return <WiCloudy size={48} />;
+        return <img src={clouds} alt="Clouds" />;
       case "Snow":
-        return <WiSnow size={48} />;
+        return <img src={snow} alt="Snow" />;
       case "Thunderstorm":
-        return <WiThunderstorm size={48} />;
+        return <img src={thunder} alt="Thunderstorm" />;
       default:
-        return <WiCloudy size={48} />;
+        return <img src={sun} alt="Default" />;
     }
   }
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${KEY}&units=metric`
+        );
+        const data = await res.json();
+        setWeatherInfo(data);
+        setCity(data.name);
+      } catch (err) {
+        setError("Unable to get weather by location");
+        console.error("Geolocation error:", err.message);
+        setError("Geolocation permission denied");
+        setCity("bratislava");
+      }
+      (err) => {
+        console.error("Geolocation error:", err.message);
+        setError("Geolocation permission denied");
+        setCity("bratislava");
+      };
+    });
+  }, []);
 
   useEffect(() => {
     if (!city) return;
@@ -69,15 +93,7 @@ function Weather() {
 
         {!isLoading && error && (
           <>
-            <div className={styles.cityInfo}>
-              <span className={styles.weatherIcon}></span>
-              <h2 className={styles.cityTemperature}>Loading in proces</h2>
-              <h3 className={styles.cityName}></h3>
-              <div className={styles.otherInfo}>
-                <span className={styles.humidity}>%</span>
-                <span className={styles.wind}>km/h</span>
-              </div>
-            </div>
+            <p>{error.message}</p>
           </>
         )}
 
@@ -88,15 +104,16 @@ function Weather() {
                 {getWeatherIcon(weatherInfo.weather[0].main)}
               </span>
               <h2 className={styles.cityTemperature}>
-                {Math.floor(weatherInfo.main.temp)} C
+                {Math.floor(weatherInfo.main.temp)}°C
               </h2>
               <h3 className={styles.cityName}>{city}</h3>
               <div className={styles.otherInfo}>
                 <span className={styles.humidity}>
-                  {weatherInfo.main.humidity}%
+                  {weatherInfo.main.humidity}% <p>Humidity</p>
                 </span>
                 <span className={styles.wind}>
                   {weatherInfo.wind.speed}km/h
+                  <p>speed</p>
                 </span>
               </div>
             </div>
