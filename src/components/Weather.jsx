@@ -1,38 +1,24 @@
 import { useEffect, useState } from "react";
-import SearchField from "./SearchField";
 import styles from "./Weather.module.css";
+import SearchField from "./SearchField";
 import Loader from "./Loader";
-
-import sun from "../assets/sun.png";
-import rain from "../assets/rain.png";
-import clouds from "../assets/cloudy.png";
-import snow from "../assets/snow.png";
-import thunder from "../assets/storm.png";
+import getWeatherIcon from "./GetWeatherIcon";
+import noResult from "../assets/no-results.png";
+import { WiHumidity } from "react-icons/wi";
+import { FaWind } from "react-icons/fa6";
 
 function Weather() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [city, setCity] = useState("");
   const [weatherInfo, setWeatherInfo] = useState(null);
-  const KEY = `1ee9567da45698af17a8393925c57305`;
+  const KEY = import.meta.env.VITE_API_KEY;
 
-  function getWeatherIcon(main) {
-    switch (main) {
-      case "Clear":
-        return <img src={sun} alt="Clear" />;
-      case "Rain":
-        return <img src={rain} alt="Rain" />;
-      case "Clouds":
-        return <img src={clouds} alt="Clouds" />;
-      case "Snow":
-        return <img src={snow} alt="Snow" />;
-      case "Thunderstorm":
-        return <img src={thunder} alt="Thunderstorm" />;
-      default:
-        return <img src={sun} alt="Default" />;
-    }
+  let localTime = null;
+  if (weatherInfo?.timezone) {
+    const utc = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+    localTime = new Date(utc + weatherInfo.timezone * 1000);
   }
-
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
@@ -48,12 +34,10 @@ function Weather() {
         setError("Unable to get weather by location");
         console.error("Geolocation error:", err.message);
         setError("Geolocation permission denied");
-        setCity("bratislava");
       }
       (err) => {
         console.error("Geolocation error:", err.message);
         setError("Geolocation permission denied");
-        setCity("bratislava");
       };
     });
   }, []);
@@ -93,40 +77,50 @@ function Weather() {
 
         {!isLoading && error && (
           <>
-            <p>{error.message}</p>
-          </>
-        )}
-
-        {!isLoading && !error && weatherInfo && weatherInfo.main && (
-          <>
-            <div className={styles.cityInfo}>
-              <span className={styles.weatherIcon}>
-                {getWeatherIcon(weatherInfo.weather[0].main)}
-              </span>
-              <h2 className={styles.cityTemperature}>
-                {Math.floor(weatherInfo.main.temp)}°C
-              </h2>
-              <h3 className={styles.cityName}>{city}</h3>
-              <div className={styles.otherInfo}>
-                <span className={styles.humidity}>
-                  {weatherInfo.main.humidity}% <p>Humidity</p>
-                </span>
-                <span className={styles.wind}>
-                  {weatherInfo.wind.speed}km/h
-                  <p>speed</p>
-                </span>
-              </div>
-            </div>
+            <p>{error}</p>
           </>
         )}
 
         {!isLoading &&
           !error &&
+          weatherInfo &&
+          weatherInfo.main &&
+          localTime && (
+            <div className={styles.cityInfo}>
+              <img
+                className={styles.weatherIcon}
+                src={getWeatherIcon(weatherInfo.weather[0].main, localTime)}
+                alt={weatherInfo.weather[0].main}
+              />
+              <h2 className={styles.cityTemperature}>
+                {Math.floor(weatherInfo.main.temp)}°C
+              </h2>
+              <h3 className={styles.cityName}>{city}</h3>
+              <div className={styles.otherInfo}>
+                <span>
+                  <WiHumidity className={styles.weatherIcon} />
+                  {weatherInfo.main.humidity}%
+                  <p className={styles.humidity}>Humidity</p>
+                </span>
+                <span>
+                  <FaWind className={styles.weatherIcon} />
+                  {weatherInfo.wind.speed}km/h
+                  <p className={styles.wind}>Speed</p>
+                </span>
+              </div>
+            </div>
+          )}
+
+        {!isLoading &&
+          !error &&
           (!weatherInfo || !weatherInfo.main) &&
-          !city && (
+          city && (
             <>
               <div className={styles.cityInfo}>
-                <span className={styles.weatherIcon}>enter the city</span>
+                <p className={styles.wrongCity}>
+                  City not found... <br />
+                  <img src={noResult} alt="no result" />
+                </p>
               </div>
             </>
           )}

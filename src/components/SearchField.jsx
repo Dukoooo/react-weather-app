@@ -9,6 +9,7 @@ function SearchField({ onSetCity }) {
     e.preventDefault();
     if (currCity.trim()) {
       onSetCity(currCity);
+      setCurrCity("");
     }
   }
 
@@ -22,6 +23,9 @@ function SearchField({ onSetCity }) {
         required
         autoFocus
       />
+      <button type="submit" className={styles.button}>
+        <FaSearch className={styles.fa} />
+      </button>
     </form>
   );
 }

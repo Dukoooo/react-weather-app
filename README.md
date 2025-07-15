@@ -1,12 +1,33 @@
-# React + Vite
+Weather App 🌤️
+A simple React application that displays current weather based on the entered city or your current location.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Features
 
-Currently, two official plugins are available:
+01.🔍 Search for weather by city name
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+02.📍 Automatic location detection using geolocation
 
-## Expanding the ESLint configuration
+03.🌡️ Display of temperature, humidity, and wind speed
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+04.🌓 Icons change depending on the time of day (day/night)
+
+🛠️ Built with:
+⚛️ React
+🌐 OpenWeatherMap API
+🎨 CSS Modules
+💡 react-icons
+
+📦 Installation & Running the App
+bash
+Kopírovať
+Upraviť
+npm install
+npm run dev
+
+📌 Notes
+Make sure your browser allows geolocation access.
+If the city is not found or there's an API error, a fallback message is shown.
+
+👤 Author
+Created with ❤️ by Juraj Duko Golian
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/juraj-golian-884939220) or check out more of my work on [GitHub](https://github.com/Dukoooo).

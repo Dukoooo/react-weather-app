@@ -1,24 +1,41 @@
 .searchContainer {
   display: flex;
   justify-content: center;
+  max-width: fit-content;
   align-items: center;
-  margin: 4% auto;
+  margin: 3% auto 0 auto;
   background: #ffffff;
   padding: 10px 14px;
   border-radius: 14px;
-  z-index: 100;
   box-shadow: 0 0.3rem #cecaca38;
+  box-sizing: content-box;
 }
 
 .searchContainer input {
   background: transparent;
   border: none;
-  text-align: left;
+  text-align: center;
   color: rgb(81, 77, 77);
-  font-size: clamp(0.8rem, 1.1vw, 1.2em);
+  font-size: clamp(0.7rem, 1vw, 1em);
   font-family: "Inter", sans-serif;
 }
 
 .searchContainer input:focus {
   outline: none;
+}
+
+.button {
+  outline: none;
+  background: transparent;
+  border: none;
+}
+
+.fa {
+  color: #090958cd;
+  scale: 1.2;
+}
+@media screen and (max-width: 450px) {
+  .searchContainer {
+    width: 90%;
+  }
 }
